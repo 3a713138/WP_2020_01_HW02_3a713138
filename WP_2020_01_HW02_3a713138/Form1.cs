@@ -11,11 +11,13 @@ using WP_2020_01_HW02_3a713138.Properties;
 
 namespace WP_2020_01_HW02_3a713138
 {
-    
+
 
     public partial class Form1 : Form
     {
         List<Image> list = new List<Image>();
+        int[] randomArray = new int[13];
+        int i = 0;
         public Form1()
         {
             InitializeComponent();
@@ -78,11 +80,36 @@ namespace WP_2020_01_HW02_3a713138
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            int index = new Random().Next(51);
-            //模擬隨機產生 一個值;
-            pictureBox1.Image = list[index];
+            if (i < 12)
+            {
+                pictureBox1.Image = list[randomArray[i]];
+                i = i + 1;
+            }
+            else
+            {
+                MessageBox.Show($"請重新洗牌", "警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                pictureBox1.Image = list[52];
+                i = 0;
+            }   
         }
 
-        
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Random rnd = new Random();  //產生亂數初始值
+            for (int i = 0; i < 12; i++)
+            {
+                randomArray[i] = rnd.Next(0, 13);   //亂數產生，亂數產生的範圍是1~9
+
+                for (int j = 0; j < i; j++)
+                {
+                    while (randomArray[j] == randomArray[i])    //檢查是否與前面產生的數值發生重複，如果有就重新產生
+                    {
+                        j = 0;  //如有重複，將變數j設為0，再次檢查 (因為還是有重複的可能)
+                        randomArray[i] = rnd.Next(0, 13);   //重新產生，存回陣列，亂數產生的範圍是1~9
+                    }
+                }
+            }
+        }
+
     }
 }
